@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:c="http://www.w3.org/1999/XSL/Transform">
 <head>
     <meta charset="UTF-8"/>
     <title>User table</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script>
     <script src="/js/script.js"></script>
     <link rel="stylesheet" th:href="@{/styles.css}" type="text/css"/>
 </head>
@@ -27,14 +28,18 @@
         <!-- Начало Навигационный блок для переключения режима просмотра страницы админа и юзера-->
         <div class="col-2" id="main-nav">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a sec:authorize="hasAnyAuthority('admin')" class="nav-link active" id="v-pills-home-tab" data-toggle="tab" href="#admin" role="tab"
+
+                <a sec:authorize="hasAnyAuthority('admin')" class="nav-link active" id="v-pills-home-tab"
+                   data-toggle="tab" href="#admin" role="tab"
                    aria-controls="v-pills-home" aria-selected="true">Admin</a>
-<!--                <a sec:authorize="hasAnyAuthority('user')" class="nav-link" id="v-pills-profile-tab" data-toggle="tab" href="#user" role="tab"-->
-<!--                   aria-controls="v-pills-profile" aria-selected="false">User</a>-->
+                <a sec:authorize="hasAnyAuthority('user')" class="nav-link" id="v-pills-profile-tab" data-toggle="tab"
+                   href="#user" role="tab"
+                   aria-controls="v-pills-profile" aria-selected="false">User</a>
+
             </div>
         </div>
         <div class="col-10 tab-content bg-light text-dark" id="main-window">
-            <div class="tab-pane show active" id="admin">
+            <div sec:authorize="hasAnyAuthority('admin')" class="tab-pane show active" id="admin">
                 <h2>Admin table</h2>
                 <!-- Навигация вкладки -->
                 <div class="card-body px-0 py-0 rounded-0">
@@ -65,7 +70,8 @@
                                         </tr>
                                         <tbody id="tbody"></tbody>
                                     </table>
-                                    <!--                                    Модальное окно Начало-->
+
+                                    <!-- Modal Edit start-->
                                     <!-- The Modal -->
                                     <div class="modal" id="modal-edit">
                                         <div class="modal-dialog">
@@ -115,15 +121,18 @@
                                                 <!-- Modal footer -->
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary close-btn"
-                                                            data-dismiss="modal">Close
+                                                            data-dismiss="modal" id="close-update-user">Close
                                                     </button>
-                                                    <button type="submit" class="btn btn-primary" id="update-user">Edit user</button>
+                                                    <button type="submit" class="btn btn-primary" id="update-user">Edit
+                                                        user
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <!--  Modal Edit End -->
-<!--                                        Modal Delete start-->
+
+                                    <!-- Modal Delete start-->
                                     <div class="modal" id="modal-delete">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -170,18 +179,22 @@
                                                 </div>
                                                 <!-- Modal footer -->
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" id="close-delete-btn"
+                                                    <button type="button" class="btn btn-secondary"
+                                                            id="close-delete-btn"
                                                             data-dismiss="modal">Close
                                                     </button>
-                                                    <button type="submit" class="btn btn-danger" id="delete-user">Delete user</button>
+                                                    <button type="submit" class="btn btn-danger" id="delete-user">Delete
+                                                        user
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-<!--                                            Model Delete End-->
+                                    <!-- Model Delete End-->
                                 </div>
                             </div>
                         </div>
+
                         <div class="tab-pane" id="new-user" role="tabpanel">
                             <div class="card-body px-0 py-0 rounded-0" id="card-form-add-new-user">
                                 <h5 class="card-header border-0 rounded-0" style="background-color: #EEEEEE">Add new
@@ -207,15 +220,15 @@
                                                 <input type="password" name="password" class="form-control"
                                                        placeholder="Password" id="passwordInput">
                                             </div>
-                                                <div class="form-group">
-                                                    <b for="rolesInput"
-                                                       class="d-flex justify-content-center">Role</b>
-                                                    <select class="form-control d-flex justify-content-center"
-                                                            id="rolesInput" multiple name="roles">
-                                                        <option value="ADMIN" selected>ADMIN</option>
-                                                        <option value="USER">USER</option>
-                                                    </select>
-                                                </div>
+                                            <div class="form-group">
+                                                <b for="rolesInput"
+                                                   class="d-flex justify-content-center">Role</b>
+                                                <select class="form-control d-flex justify-content-center"
+                                                        id="rolesInput" multiple name="roles">
+                                                    <option id="u_roles_admin" value="ADMIN" selected>ADMIN</option>
+                                                    <option id="u_roles_user" value="USER">USER</option>
+                                                </select>
+                                            </div>
                                             <div class="d-flex justify-content-center">
                                                 <button type="submit" class="btn btn-success" id="registrationButton">
                                                     Add new user
@@ -230,7 +243,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane" id="user">
+            <div sec:authorize="hasAnyAuthority('user')" class="tab-pane" id="user">
                 <h2>User information page</h2>
                 <div class="tab-content">
                     <div class="card-body px-0 py-0 rounded-0 border-0">
@@ -275,5 +288,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+
 </body>
 </html>

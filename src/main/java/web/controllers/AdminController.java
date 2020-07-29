@@ -18,28 +18,28 @@ public class AdminController {
     }
 
     @GetMapping
-    public String getAllUsers(Authentication authentication, Model model) {
+    public String getMainPage(Authentication authentication, Model model) {
 
         model.addAttribute("user", serviceAbstractInterface.getEntityByName(authentication.getName()));
-        model.addAttribute("userList", serviceAbstractInterface.allEntity());
         return "table";
     }
-
-    @PostMapping("/userAdd")
-    public String addUser(UserDto userDto) {
-        serviceAbstractInterface.addEntity(userDto);
-        return "redirect:/admin";
-    }
-
-    @PostMapping("/delete")
-    public String deleteUser(@RequestParam("id") long id) {
-        serviceAbstractInterface.deleteEntity(id);
-        return "redirect:/admin";
-    }
-
-    @PostMapping("/editUser")
-    public String editUser(@ModelAttribute("user") UserDto userDto) {
-        serviceAbstractInterface.updateEntity(userDto);
-        return "redirect:/admin";
-    }
 }
+
+//    @PostMapping("/userAdd")
+//    public String addUser(UserDto userDto) {
+//        serviceAbstractInterface.addEntity(userDto);
+//        return "redirect:/admin";
+//    }
+//
+//    @PostMapping("/delete")
+//    public String deleteUser(@RequestParam("id") long id) {
+//        serviceAbstractInterface.deleteEntity(id);
+//        return "redirect:/admin";
+//    }
+//
+//    @PostMapping("/editUser")
+//    public String editUser(@ModelAttribute("user") UserDto userDto) {
+//        serviceAbstractInterface.updateEntity(userDto);
+//        return "redirect:/admin";
+//    }
+//}

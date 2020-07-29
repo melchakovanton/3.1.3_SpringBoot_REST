@@ -43,10 +43,8 @@ public class AdminRestController {
 
     @PutMapping("/editUser")
     public ResponseEntity<UserDto> editUser(@RequestBody UserDto userDto) {
-        if (serviceAbstractInterface.updateEntity(userDto)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        serviceAbstractInterface.updateEntity(userDto);
+        return ResponseEntity.ok(serviceAbstractInterface.getEntityById(userDto.getId()));
+
     }
 }
